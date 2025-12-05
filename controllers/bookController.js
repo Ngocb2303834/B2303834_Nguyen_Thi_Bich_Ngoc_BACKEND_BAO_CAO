@@ -1,6 +1,4 @@
-const Book = require('../models/Book'); // đường dẫn tới file Book.js
-
-// Thêm một sách mới
+const Book = require('../models/Book');
 const addBook = async (req, res) => {
     try {
         const { tenSach, donGia, soQuyen, namXuatBan, tacGia, maNXB, hinhAnh } = req.body;
@@ -11,8 +9,6 @@ const addBook = async (req, res) => {
         res.status(400).json({ message: 'Lỗi khi thêm sách', error });
     }
 };
-
-// Sửa thông tin sách theo id
 const updateBook = async (req, res) => {
     try {
         const { id } = req.params;
@@ -23,8 +19,6 @@ const updateBook = async (req, res) => {
         res.status(400).json({ message: 'Lỗi khi cập nhật sách', error });
     }
 };
-
-// Xóa một sách theo id
 const deleteBook = async (req, res) => {
     try {
         const { id } = req.params;
@@ -35,8 +29,6 @@ const deleteBook = async (req, res) => {
         res.status(400).json({ message: 'Lỗi khi xóa sách', error });
     }
 };
-
-// Xóa tất cả sách
 const deleteAllBooks = async (req, res) => {
     try {
         const result = await Book.deleteMany({});
@@ -45,8 +37,6 @@ const deleteAllBooks = async (req, res) => {
         res.status(400).json({ message: 'Lỗi khi xóa tất cả sách', error });
     }
 };
-
-// Liệt kê tất cả sách
 const getAllBooks = async (req, res) => {
     try {
         const books = await Book.find().populate('maNXB');
@@ -55,8 +45,6 @@ const getAllBooks = async (req, res) => {
         res.status(400).json({ message: 'Lỗi khi lấy danh sách sách', error });
     }
 };
-
-// Tìm một sách theo id
 const getBookById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -67,14 +55,10 @@ const getBookById = async (req, res) => {
         res.status(400).json({ message: 'Lỗi khi tìm sách', error });
     }
 };
-
-// Tìm sách theo tên (keyword search, không phân biệt hoa thường)
 const getBooksByName = async (req, res) => {
     try {
-        const { tenSach } = req.query; // Lấy từ query param: /api/book/search?tenSach=keyword
+        const { tenSach } = req.query;
         if (!tenSach) return res.status(400).json({ message: 'Vui lòng cung cấp tên sách' });
-
-        // Sử dụng regex để tìm kiếm không phân biệt hoa thường
         const books = await Book.find({ 
             tenSach: { $regex: tenSach, $options: 'i' } 
         }).populate('maNXB');

@@ -1,11 +1,6 @@
 const Borrow = require('../models/Borrow');
 const Book = require('../models/Book');
 const User = require('../models/User');
-
-/**
- * Thêm phiếu mượn sách
- * @route POST /api/borrow
- */
 exports.createBorrow = async (req, res) => {
     try {
         const { idSach, idUser, ngayMuon, ngayTra, soQuyenMuon } = req.body;
@@ -26,11 +21,6 @@ exports.createBorrow = async (req, res) => {
         res.status(400).json({ message: 'Lỗi khi tạo phiếu mượn', error });
     }
 };
-
-/**
- * Trả sách
- * @route POST /api/borrow/return/:borrowId
- */
 exports.returnBook = async (req, res) => {
     try {
         const { borrowId } = req.params;
@@ -50,11 +40,6 @@ exports.returnBook = async (req, res) => {
         res.status(400).json({ message: 'Lỗi khi trả sách', error });
     }
 };
-
-/**
- * Xem tất cả sách đã và đang mượn
- * @route GET /api/borrow
- */
 exports.getAllBorrows = async (req, res) => {
     try {
         const borrows = await Borrow.find()
@@ -68,11 +53,6 @@ exports.getAllBorrows = async (req, res) => {
         res.status(500).json({ message: 'Lỗi khi lấy phiếu mượn', error });
     }
 };
-
-/**
- * Xem các sách đang mượn
- * @route GET /api/borrow/active
- */
 exports.getActiveBorrows = async (req, res) => {
     try {
         const borrows = await Borrow.find({ trangThai: 'dangMuon' })
@@ -86,11 +66,6 @@ exports.getActiveBorrows = async (req, res) => {
         res.status(500).json({ message: 'Lỗi khi lấy sách đang mượn', error });
     }
 };
-
-/**
- * Lấy phiếu mượn theo id
- * @route GET /api/borrow/:id
- */
 exports.getBorrowById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -107,16 +82,9 @@ exports.getBorrowById = async (req, res) => {
         res.status(500).json({ message: 'Lỗi khi lấy phiếu mượn', error });
     }
 };
-
-/**
- * Xem tất cả sách đã và đang mượn của 1 user
- * @route GET /api/borrow/user/:userId
- */
 exports.getUserBorrows = async (req, res) => {
     try {
         const { userId } = req.params;
-
-        // Nếu role là user, chỉ cho phép xem chính mình
         if (req.user.role === 'user' && req.user.id !== userId) {
             return res.status(403).json({ message: 'Không đủ quyền xem phiếu mượn của user khác' });
         }
@@ -133,16 +101,9 @@ exports.getUserBorrows = async (req, res) => {
         res.status(500).json({ message: 'Lỗi khi lấy sách mượn của user', error });
     }
 };
-
-/**
- * Xem các sách đang mượn của 1 user
- * @route GET /api/borrow/user/:userId/active
- */
 exports.getUserActiveBorrows = async (req, res) => {
     try {
         const { userId } = req.params;
-
-        // Nếu role là user, chỉ cho phép xem chính mình
         if (req.user.role === 'user' && req.user.id !== userId) {
             return res.status(403).json({ message: 'Không đủ quyền xem phiếu mượn của user khác' });
         }
@@ -159,10 +120,6 @@ exports.getUserActiveBorrows = async (req, res) => {
         res.status(500).json({ message: 'Lỗi khi lấy sách đang mượn của user', error });
     }
 };
-/**
- * Sửa phiếu mượn
- * @route PUT /api/borrow/:id
- */
 exports.updateBorrow = async (req, res) => {
     try {
         const { id } = req.params;
@@ -187,10 +144,6 @@ exports.updateBorrow = async (req, res) => {
         });
     }
 };
-/**
- * Xóa 1 phiếu mượn
- * @route DELETE /api/borrow/:id
- */
 exports.deleteBorrow = async (req, res) => {
     try {
         const { id } = req.params;
@@ -213,10 +166,6 @@ exports.deleteBorrow = async (req, res) => {
         });
     }
 };
-/**
- * Xóa tất cả phiếu mượn
- * @route DELETE /api/borrow
- */
 exports.deleteAllBorrows = async (req, res) => {
     try {
         const result = await Borrow.deleteMany({});
