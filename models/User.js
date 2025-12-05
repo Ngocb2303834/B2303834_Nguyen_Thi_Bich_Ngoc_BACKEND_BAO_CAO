@@ -1,18 +1,16 @@
 const mongoose = require('mongoose');
 
-// Định nghĩa Schema cho User
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Email là bắt buộc'],
         unique: true,
-        match: [/.+@.+\..+/, 'Email không hợp lệ'] // Regex kiểm tra định dạng email cơ bản
+        match: [/.+@.+\..+/, 'Email không hợp lệ']
     },
     password: {
         type: String,
         required: [true, 'Mật khẩu là bắt buộc']
     },
-    // Bạn có thể thêm các trường khác như name, role, v.v.
     createdAt: {
         type: Date,
         default: Date.now
@@ -37,10 +35,9 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["user"],  // role chỉ có thể là "user"
+        enum: ["user"],
         default: "user"
     }
 });
 
-// Tạo và export Model
 module.exports = mongoose.model('User', UserSchema);

@@ -5,7 +5,7 @@ const StaffSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Email là bắt buộc'],
         unique: true,
-        match: [/.+@.+\..+/, 'Email không hợp lệ'] // Regex kiểm tra định dạng email cơ bản
+        match: [/.+@.+\..+/, 'Email không hợp lệ']
     },
     password: {
         type: String,
